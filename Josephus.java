@@ -51,11 +51,8 @@ public class Josephus {
 	// Initialize number of men 
     start(n);
     
-    // Remove every k men
-    Soldier remaining = remove(k);
-    
-    // Print result
-    System.out.println("The last remaining soldier is "+remaining.data);
+    // Execute according to k
+    remove(k, n);
   }
 
   /* Create number of men and links in doubly circular linked list
@@ -64,13 +61,18 @@ public class Josephus {
   public void start(int n) {
 	Soldier temp_soldier = null;
 	
+	if (n < 2){
+		System.err.println("Parameter must be at least 2");
+		return;
+	}
+	
 	for (int i = 1; i < n + 1; i++){
 		Soldier soldier = new Soldier(n);
 		
 		// identify each soldier
 		soldier.data = i;
 		
-		System.out.println("Soldier is born: "+i+" data: "+soldier.data);
+		//System.out.println("Soldier is born: "+i+" data: "+soldier.data);
 		
 		// if first soldier, there is no link
 		if (i == 1){
@@ -97,32 +99,35 @@ public class Josephus {
 
   /** Remove every k man from the list
    * @param k skip successive executions
+   * @param n number of soldiers
    */
-  public Soldier remove(int k) {
+  public void remove(int k, int n) {
 	  // find Kth soldier
 	  
 	  // First check if k is between 1 and n to guarantee we won't fall off
-	  
-	  Soldier x; 
-	  int i = 0;
-	  for (x = head; x.next != x && x.previous != x; x = x.next){
-		  // remove every k starting from 1
-		  if (i == k-1){
-			  // remove 
+	  if ((k > 1 && k < n)){
+		  Soldier x; 
+		  int i = 0;
+		  for (x = head; x.next != x && x.previous != x; x = x.next){
+			  // remove every k starting from 1
+			  if (i == k-1){
+				  // remove 
+				  System.out.println("Soldier "+x);
+				  x.previous.next = x.next;
+				  x.next.previous = x.previous;
+
+				  System.out.println("Soldier "+x.data+" executed. RIP. ");
+				  i = 0;
+				  continue;
+			  }
+			  i++;
+			  System.out.println(i);
 			  System.out.println("Soldier "+x);
-			  x.previous.next = x.next;
-			  x.next.previous = x.previous;
-			  
-			  System.out.println("Soldier "+x.data+" executed. RIP. ");
-			  i = 0;
-			  continue;
 		  }
-		  i++;
-		  System.out.println(i);
-		  System.out.println("Soldier "+x);
+		  System.out.println("Last remaining soldier is "+x.data);
+	  } else {
+	      System.err.println("Parameter must be between 1 and n ");
 	  }
-	  
-	  return x;
   }
 	  
   public static void main(String [] args) {
