@@ -48,6 +48,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * Constructor to create an empty singly linked list.
    */
   public HeaderSLL() {
+	head = new Element<T>(null); // create dummy header
     clear();
   }
 
@@ -56,75 +57,69 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    */
   public void clear() {
     // No elements are in the list, so everything is null.
-	// Create dummy list header
-	  // currentPred points to dummy list header
-    head = null;
-    head.next = null; // indicates that there is no current
+	  
     currentPred = head;
+    head.next = null;
   }
 
   /**
    * @see CS10ListADT#add()
    */
   public void add(T obj) {
+	// dummy header eliminates special case of adding at the head
     Element<T> x = new Element<T>(obj);   // allocate a new element
 
-    // There are two distinct cases, depending on whether the new element
-    // is to be the new head.
+    // There are two distinct cases, depending on whether the list is empty
+    // list not empty
     if (hasCurrent()) {
-      // The new element is not the new head.
-      x.next = currentPred.next;  // fix the next reference for the new element
-      currentPred.next = x;       // fix the next reference for current element
-    }
-    else {
-      // The new element becomes the new head.
-      x.next = head;          // new element's next pointer is old head
-      head = x;               // and the new element becomes the head
+	    x.next = currentPred.next.next;  // fix the next reference for the new element
+	    currentPred.next.next = x;       // fix the next reference for current element
+	    
+	    currentPred = currentPred.next; // make x the new current
+    } else { 
+    	// list empty
+    	x.next = null; // fix next reference for new element
+    	currentPred.next = x; // fix next reference for current element
     }
     
-    // And check whether we need to update the tail.
-//    if (tail == currentPred) 
-//      tail = x;
-
-    currentPred = x;              // new element is current position
   }
 
   /**
    *   * @see CS10ListADT#remove()
    */
   public void remove() {
-    Element<T> pred;               // currentPred element's predecessor
-  
-    if (!hasCurrent()) {          // check whether currentPred element exists
-      System.err.println("No currentPred item");
+    if (!hasCurrent()) {          // check whether currentPred.next element exists
+      System.err.println("No current item");
       return;
     }
     
-    if (currentPred == head)  {
-      head = currentPred.next;      // no predecessor, so update head
-      pred = null;
-    }
-    else {
+//    if (currentPred.next == head)  {
+//      head = currentPred.next.next;      // no predecessor, so update head
+//      pred = null;
+//    }
+//    else {
       // NOTE: Finding the predecessor makes remove a linear-time operation,
       // rather than a constant-time operation.
-      for (pred = head; pred != null && pred.next != currentPred; pred = pred.next) 
-        ;
+//      for (pred = head; pred != null && pred.next != currentPred.next; pred = pred.next) 
+//        ;
       
       // At this point, either pred == null, in which case we never found the
-      // currentPred element on the list (an error), or pred.next == current.
-      if (pred == null) {
-        System.err.println("Current item is not part of list.");
-        return;
-      }
+      // currentPred.next element on the list (an error), or pred.next == current.
+//      if (pred == null) {
+//        System.err.println("Current item is not part of list.");
+//        return;
+//      }
       
-      pred.next = currentPred.next;   // splice current out of list
-    }
+//      pred.next = currentPred.next.next;   // splice current out of list
+//    }
   
     // If we're removing the tail of the list, update that information.
-//    if (tail == currentPred) 
+//    if (tail == currentPred.next) 
 //      tail = pred;
   
-    currentPred = currentPred.next;       // make the successor the current position
+//    currentPred.next = currentPred.next;       // make the successor the current position
+    currentPred.next = currentPred.next.next; // change next reference 
+    	
   }
 
   /**
@@ -133,7 +128,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
   public String toString() {
     String result = "";
     
-    for (Element<T> x = head; x != null; x = x.next) 
+    for (Element<T> x = head.next; x != null; x = x.next) // start from head.next to skip dummy header
       result += x.toString() + "\n"; 
     
     return result;
@@ -151,7 +146,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
     // We dropped out of the loop either because we ran off the end of the list
     // (in which case x == null) or because we found s (and so x != null).
     if (x != null)
-      currentPred = x;
+      currentPred.next = x;
   
     return x != null;
   }
@@ -160,21 +155,21 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#isEmpty()
    */
   public boolean isEmpty() {
-    return head == null;
+    return head.next == null; // check after dummy list header
   }
   
   /**
    * @see CS10ListADT#hasCurrent()
    */
   public boolean hasCurrent() {
-    return currentPred != null;
+    return currentPred.next != null;
   }
   
   /**
    * @see CS10ListADT#hasNext()
    */
   public boolean hasNext() {
-    return hasCurrent() && currentPred.next != null;
+    return hasCurrent() && currentPred.next.next != null;
   }
   
   /**
@@ -185,7 +180,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
       System.err.println("The list is empty");
       return null;
     }
-    currentPred = head;
+    currentPred.next = head;
     return get();
   }
   
@@ -198,7 +193,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
       return null;
     }
     else {
-//      currentPred = tail;
+//      currentPred.next = tail;
       return get();
     }
   }
@@ -207,7 +202,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#addFirst()
    */
   public void addFirst(T obj) {
-    currentPred = null;
+    currentPred.next = null;
     add(obj);
   }
 
@@ -228,10 +223,10 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    */
   public T get() {
     if (hasCurrent()) {
-      return currentPred.data;
+      return currentPred.next.data;
     }
     else {
-      System.err.println("No currentPred item");
+      System.err.println("No currentPred.next item");
       return null;
     }
 
@@ -242,9 +237,9 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    */
   public void set(T obj) {
     if (hasCurrent())
-    	currentPred.data = obj;
+    	currentPred.next.data = obj;
     else
-      System.err.println("No currentPred item");
+      System.err.println("No currentPred.next item");
   }
   
   /**
@@ -252,8 +247,8 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    */
   public T next() {
     if (hasNext()) {
-      currentPred = current.next;
-      return currentPred.data;
+      currentPred.next = currentPred.next;
+      return currentPred.next.data;
     }
     else {
       System.err.println("No next item");
