@@ -111,8 +111,7 @@ public class Josephus {
 		  for (x = head; x.next != x && x.previous != x; x = x.next){
 			  // remove every k starting from 1
 			  if (i == k-1){
-				  // remove 
-				  System.out.println("Soldier "+x);
+				  // remove soldier from the list by adjusting references
 				  x.previous.next = x.next;
 				  x.next.previous = x.previous;
 
@@ -121,8 +120,6 @@ public class Josephus {
 				  continue;
 			  }
 			  i++;
-			  System.out.println(i);
-			  System.out.println("Soldier "+x);
 		  }
 		  System.out.println("Last remaining soldier is "+x.data);
 	  } else {
