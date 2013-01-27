@@ -72,8 +72,6 @@ public class Josephus {
 		// identify each soldier
 		soldier.data = i;
 		
-		//System.out.println("Soldier is born: "+i+" data: "+soldier.data);
-		
 		// if first soldier, there is no link
 		if (i == 1){
 			// store reference
