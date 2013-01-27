@@ -29,12 +29,12 @@ public class Josephus {
      * @param obj the data in the element.
      */
     public Soldier(int number) {
-      next = previous = null;   // no element before or after this one, yet
-      data = number;               // OK to copy reference, since obj references an immutable object
+      next = previous = null;   // no element yet
+      data = number;            // identifier for soldier   
     }
 
     /**
-     *  @return the String representation of a linked list element.
+     *  @return the String representation of a Soldier number
      */
     public String toString() {
       return String.valueOf(data);
@@ -42,7 +42,7 @@ public class Josephus {
   }
 
   /**
-   * Constructor for a circular, doubly linked list without sentinel
+   * Constructor for a circular, doubly linked list using soldiers without sentinel
    * @param n number of soldiers
    * @param k skip successive executions
    */
@@ -102,21 +102,23 @@ public class Josephus {
    * @param n number of soldiers
    */
   public void remove(int k, int n) {
-	  // find Kth soldier
-	  
 	  // First check if k is between 1 and n to guarantee we won't fall off
 	  if ((k > 1 && k < n)){
 		  Soldier x; 
 		  int i = 0;
+		  
+		  // Stop when there is only 1 soldier left (no next and no previous)
 		  for (x = head; x.next != x && x.previous != x; x = x.next){
-			  // remove every k starting from 1
-			  if (i == k-1){
+			  
+			  // remove every k counting from Soldier 1
+			  if (i == k - 1){
+				  
 				  // remove soldier from the list by adjusting references
 				  x.previous.next = x.next;
 				  x.next.previous = x.previous;
 
 				  System.out.println("Soldier "+x.data+" executed. RIP. ");
-				  i = 0;
+				  i = 0; // reset
 				  continue;
 			  }
 			  i++;
@@ -128,8 +130,8 @@ public class Josephus {
   }
 	  
   public static void main(String [] args) {
-	  int parameter_n, parameter_k ;           // a command
-	  Scanner input = new Scanner(System.in);
+	  int parameter_n, parameter_k ;           
+	  Scanner input = new Scanner(System.in); // ask for user inputs
 	  
       System.out.print("Enter number n of soldiers, at least 2: ");
       parameter_n = input.nextInt();
