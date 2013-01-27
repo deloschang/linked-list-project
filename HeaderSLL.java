@@ -56,8 +56,8 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#clear()
    */
   public void clear() {
-    // No elements are in the list, so everything is null.
 	  
+	// pointer to the dummy header 
     currentPred = head;
     head.next = null;
   }
@@ -118,7 +118,13 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
 //      tail = pred;
   
 //    currentPred.next = currentPred.next;       // make the successor the current position
+    // handle tail case
+    if (currentPred.next.next == null){
+    	
+    }
+    
     currentPred.next = currentPred.next.next; // change next reference 
+    
     	
   }
 
@@ -162,7 +168,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#hasCurrent()
    */
   public boolean hasCurrent() {
-    return currentPred.next != null;
+    return head.next != null; // check if element exists after dummy list header
   }
   
   /**
@@ -180,7 +186,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
       System.err.println("The list is empty");
       return null;
     }
-    currentPred.next = head;
+    currentPred = head;
     return get();
   }
   
@@ -202,7 +208,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#addFirst()
    */
   public void addFirst(T obj) {
-    currentPred.next = null;
+    currentPred = head;
     add(obj);
   }
 
