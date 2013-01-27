@@ -13,8 +13,6 @@ import java.util.Scanner;
 
 public class Josephus {
   private Soldier head;  // current position in the list
-  private Soldier current;  // current position in the list
- 
   
   /**
    * A private inner class representing the elements in the list.
@@ -54,7 +52,10 @@ public class Josephus {
     start(n);
     
     // Remove every k men
-    remove(k);
+    Soldier remaining = remove(k);
+    
+    // Print result
+    System.out.println("The last remaining soldier is "+remaining.data);
   }
 
   /* Create number of men and links in doubly circular linked list
@@ -82,8 +83,6 @@ public class Josephus {
 		temp_soldier.next = soldier;
 		soldier.previous = temp_soldier;
 		
-		System.out.println("Previous Soldier's next: "+temp_soldier.next.data);
-		
 		// renew reference
 		temp_soldier = soldier;
 		
@@ -93,54 +92,39 @@ public class Josephus {
 			head.previous = soldier;
 			continue;
 		}
-		System.out.println("Current Soldier's previous: "+soldier.previous.data);
-		
 	}
   }
 
   /** Remove every k man from the list
    * @param k skip successive executions
    */
-  public void remove(int k) {
-//    Element<T> x = new Element<T>(obj);     // allocate a new element
-//
-//    // Splice in the new element.
-//    x.next = current.next;
-//    x.previous = current;
-//    current.next.previous = x;
-//    current.next = x;
-//
-//    current = x;                        // new element is current position
-//  }
-//
-//  /**
-//   *   * @see CS10LinkedList#remove()
-//   */
-//  public void remove() {
-//    // Do not ever let the sentinel be deleted!
-//    if (hasCurrent()) {          
-//      // Splice out the current element.
-//      current.previous.next = current.next;
-//      current.next.previous = current.previous;
-//        
-//      current = current.next;           // make successor the new current
-//    }
-//    else 
-//      System.err.println("No current item");
+  public Soldier remove(int k) {
+	  // find Kth soldier
+	  
+	  // First check if k is between 1 and n to guarantee we won't fall off
+	  
+	  Soldier x; 
+	  int i = 0;
+	  for (x = head; x.next != x && x.previous != x; x = x.next){
+		  // remove every k starting from 1
+		  if (i == k-1){
+			  // remove 
+			  System.out.println("Soldier "+x);
+			  x.previous.next = x.next;
+			  x.next.previous = x.previous;
+			  
+			  System.out.println("Soldier "+x.data+" executed. RIP. ");
+			  i = 0;
+			  continue;
+		  }
+		  i++;
+		  System.out.println(i);
+		  System.out.println("Soldier "+x);
+	  }
+	  
+	  return x;
   }
-
-  /**
-   * @return the String representation of this list.
-   */
-  public String toString() {
-    String result = "";
-    
-    for (Soldier x = head; x != head.previous; x = x.next)
-      result += x.toString() + "\n"; 
-    
-    return result;
-  }
-
+	  
   public static void main(String [] args) {
 	  int parameter_n, parameter_k ;           // a command
 	  Scanner input = new Scanner(System.in);
