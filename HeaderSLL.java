@@ -72,10 +72,14 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
     // There are two distinct cases, depending on whether the list is empty
     // list not empty
     if (hasCurrent()) {
-	    x.next = currentPred.next.next;  // fix the next reference for the new element
-	    currentPred.next.next = x;       // fix the next reference for current element
+//	    x.next = currentPred.next.next;  // fix the next reference for the new element
+//	    currentPred.next.next = x;       // fix the next reference for current element
+//	    
+//	    currentPred = currentPred.next; // make x the new current
 	    
-	    currentPred = currentPred.next; // make x the new current
+	    // add right before current / after currentPred 
+	    x.next = currentPred.next;
+	    currentPred.next = x;
     } else { 
     	// list empty
     	x.next = null; // fix next reference for new element
