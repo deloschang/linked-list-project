@@ -58,7 +58,6 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#clear()
    */
   public void clear() {
-	  
 	// pointer to the dummy header 
     currentPred = head;
     head.next = null;
@@ -84,7 +83,6 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
     	x.next = null; // fix next reference for new element
     	currentPred.next = x; // fix next reference for current element
     }
-    
   }
 
   /**
@@ -96,35 +94,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
       return;
     }
     
-//    if (currentPred.next == head)  {
-//      head = currentPred.next.next;      // no predecessor, so update head
-//      pred = null;
-//    }
-//    else {
-      // NOTE: Finding the predecessor makes remove a linear-time operation,
-      // rather than a constant-time operation.
-//      for (pred = head; pred != null && pred.next != currentPred.next; pred = pred.next) 
-//        ;
-      
-      // At this point, either pred == null, in which case we never found the
-      // currentPred.next element on the list (an error), or pred.next == current.
-//      if (pred == null) {
-//        System.err.println("Current item is not part of list.");
-//        return;
-//      }
-      
-//      pred.next = currentPred.next.next;   // splice current out of list
-//    }
-  
-    // If we're removing the tail of the list, update that information.
-//    if (tail == currentPred.next) 
-//      tail = pred;
-  
-//    currentPred.next = currentPred.next;       // make the successor the current position
-    // handle tail case
     currentPred.next = currentPred.next.next; // change next reference 
-    
-    	
   }
 
   /**
@@ -193,22 +163,27 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#getLast()
    */
   public T getLast() {
-    if (isEmpty()) {
-      System.err.println("The list is empty");
-      return null;
-    }
-    else {
-//      currentPred.next = tail;
-      return get();
-    }
+	  if (isEmpty()) {
+		  System.err.println("The list is empty");
+		  return null;
+	  } else {
+//		  currentPred.next = tail;
+		  for(currentPred = head; currentPred.next.next != null; currentPred = currentPred.next);
+		  // found last element in the list
+
+		  return get();
+	  }
   }
 
   /**
    * @see CS10ListADT#addFirst()
    */
   public void addFirst(T obj) {
-    currentPred = head;
-    add(obj);
+    Element<T> x = new Element<T>(obj);   // allocate a new element
+	x.next = head.next;
+	head.next = x;
+	
+    currentPred = head; // point to the object just added
   }
 
   /**
