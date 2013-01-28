@@ -12,6 +12,8 @@ package PS2;
  * @author Scot Drysdale, THC have made a number of modifications.
  * @author Scot Drysdale most recently modified on 1/12/2011
  * @author Prasad Jayanti changed the interface to CS10ListADT
+ * 
+ * @author Delos Chang modified to add dummy header and currentPred
  */
 public class HeaderSLL<T> implements CS10LinkedList<T> {
   // Instance variables.
@@ -72,14 +74,11 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
     // There are two distinct cases, depending on whether the list is empty
     // list not empty
     if (hasCurrent()) {
-//	    x.next = currentPred.next.next;  // fix the next reference for the new element
-//	    currentPred.next.next = x;       // fix the next reference for current element
-//	    
-//	    currentPred = currentPred.next; // make x the new current
+	    x.next = currentPred.next.next;  // fix the next reference for the new element
+	    currentPred.next.next = x;       // fix the next reference for current element
 	    
-	    // add right before current / after currentPred 
-	    x.next = currentPred.next;
-	    currentPred.next = x;
+	    currentPred = currentPred.next; // make x the new current
+	    
     } else { 
     	// list empty
     	x.next = null; // fix next reference for new element
@@ -123,10 +122,6 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
   
 //    currentPred.next = currentPred.next;       // make the successor the current position
     // handle tail case
-    if (currentPred.next.next == null){
-    	
-    }
-    
     currentPred.next = currentPred.next.next; // change next reference 
     
     	
@@ -172,7 +167,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#hasCurrent()
    */
   public boolean hasCurrent() {
-    return head.next != null; // check if element exists after dummy list header
+    return currentPred.next != null; // check if current element exists
   }
   
   /**
