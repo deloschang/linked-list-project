@@ -56,7 +56,7 @@ public class CatWorld {
     remove(k, n);
   }
 
-  /* Create number of men and links in doubly circular linked list
+  /* Create number of cats and links in doubly circular linked list
    * @param n number of cats
    */
   public void start(int n) {
@@ -97,7 +97,7 @@ public class CatWorld {
 	}
   }
 
-  /** Remove every k man from the list
+  /** Remove every k cats from the list
    * @param k skip successive executions
    * @param n number of cats
    */
