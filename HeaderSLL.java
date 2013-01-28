@@ -15,18 +15,18 @@ package PS2;
  * 
  * @author Delos Chang modified to add dummy header and currentPred
  */
+
 public class HeaderSLL<T> implements CS10LinkedList<T> {
   // Instance variables.
   private Element<T> currentPred;    // current position in the list
   private Element<T> head;       // head of list
-//  private Element<T> tail;       // tail of list
   
   /**
    * A private class inner representing the elements in the list.
    */
   private static class Element<T> {
     // Because this is a private inner class, these can't be seen from outside SLL.
-    private T data;         // reference to data stored in this element
+    private T data;         	// reference to data stored in this element
     private Element<T> next;   // reference to next item in list
     
     /**
@@ -67,7 +67,6 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#add()
    */
   public void add(T obj) {
-	// dummy header eliminates special case of adding at the head
     Element<T> x = new Element<T>(obj);   // allocate a new element
 
     // There are two distinct cases, depending on whether the list is empty
@@ -114,15 +113,15 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#contains()
    */
   public boolean contains(T obj) {
-    for (currentPred = head; currentPred.next != null && 
-    		!currentPred.next.data.equals(obj); currentPred = currentPred.next) 
-      ;
-  
-    // We dropped out of the loop either because we ran off the end of the list
-    // (in which case x == null) or because we found s (and so x != null).
-  
-    // if found, currentPred should be set before searched item
-    return currentPred.next != null;
+	  for (currentPred = head; currentPred.next != null && 
+			  !currentPred.next.data.equals(obj); currentPred = currentPred.next) 
+		  ;
+
+	  // We dropped out of the loop either because we ran off the end of the list
+	  // (in which case x == null) or because we found s (and so x != null).
+
+	  // if found, currentPred should be set before searched item
+	  return currentPred.next != null;
   }
 
   /**
@@ -154,6 +153,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
       System.err.println("The list is empty");
       return null;
     }
+    
     currentPred = head;
     return get();
   }
@@ -226,7 +226,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    */
   public T next() {
     if (hasNext()) {
-      currentPred.next = currentPred.next;
+      currentPred = currentPred.next;
       return currentPred.next.data;
     }
     else {
