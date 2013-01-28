@@ -103,7 +103,8 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
   public String toString() {
     String result = "";
     
-    for (Element<T> x = head.next; x != null; x = x.next) // start from head.next to skip dummy header
+    // start from head.next to skip dummy header
+    for (Element<T> x = head.next; x != null; x = x.next) 
       result += x.toString() + "\n"; 
     
     return result;
@@ -113,17 +114,15 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
    * @see CS10ListADT#contains()
    */
   public boolean contains(T obj) {
-    Element<T> x;
-  
-    for (x = head; x != null && !x.data.equals(obj); x = x.next) 
+    for (currentPred = head; currentPred.next != null && 
+    		!currentPred.next.data.equals(obj); currentPred = currentPred.next) 
       ;
   
     // We dropped out of the loop either because we ran off the end of the list
     // (in which case x == null) or because we found s (and so x != null).
-    if (x != null)
-      currentPred.next = x;
   
-    return x != null;
+    // if found, currentPred should be set before searched item
+    return currentPred.next != null;
   }
 
   /**
@@ -167,7 +166,7 @@ public class HeaderSLL<T> implements CS10LinkedList<T> {
 		  System.err.println("The list is empty");
 		  return null;
 	  } else {
-//		  currentPred.next = tail;
+		  // O(n) without the tail pointer
 		  for(currentPred = head; currentPred.next.next != null; currentPred = currentPred.next);
 		  // found last element in the list
 
